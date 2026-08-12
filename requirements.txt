@@ -1,0 +1,7 @@
+transformers
+torch
+sentence-transformers
+fastapi
+uvicorn
+langdetect
+pandas

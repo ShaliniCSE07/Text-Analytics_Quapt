@@ -1,0 +1,16 @@
+Platform,Company,Product,Review,Month_Year,Platform_Reference_Id,Load_timestamp,Rating,Tags,Confidence
+Google,Acme,Acme X200,"Absolutely fantastic phone, best purchase ever!",07-2026,GR-1001,2026-07-01 09:00:00,Positive,Uncategorised,98
+Twitter,Acme,Acme X200,"Battery drains way too fast, but the camera is amazing!",07-2026,TW-2001,2026-07-01 09:05:00,Neutral,Battery|Camera,90
+Google,Acme,Acme X200,"Terrible experience, would not recommend at all.",07-2026,GR-1002,2026-07-01 09:10:00,Negative,Uncategorised,93
+Twitter,Acme,Acme X200,"It's fine I guess, does the job.",07-2026,TW-2002,2026-07-01 09:15:00,Positive,Uncategorised,56
+Google,Acme,Acme X200,"Fast delivery, exactly as described, very happy!",07-2026,GR-1003,2026-07-01 09:20:00,Positive,Delivery,99
+Twitter,Acme,Acme X200,"Great price, but delivery was very slow and support was rude.",07-2026,TW-2003,2026-07-01 09:25:00,Neutral,Delivery|Customer Support,93
+Google,Acme,Acme X200,"Camera quality is stunning, photos look professional.",07-2026,GR-1004,2026-07-01 09:30:00,Positive,Camera,97
+Twitter,Acme,Acme X200,"Ce produit est incroyable, je le recommande.",07-2026,TW-2004,2026-07-01 09:35:00,language unsupported,,0
+Google,Acme,Acme X200,Customer support was unhelpful and took days to respond.,07-2026,GR-1005,2026-07-01 09:40:00,Negative,Customer Support,94
+Twitter,Acme,Acme X200,,07-2026,TW-2005,2026-07-01 09:45:00,language unsupported,,0
+Google,Acme,Acme X200,"Screen scratched within a week, very disappointed with build quality.",07-2026,GR-1006,2026-07-01 09:50:00,Negative,Uncategorised,93
+Twitter,Acme,Acme X200,Packaging was damaged but the phone itself works fine.,07-2026,TW-2006,2026-07-01 09:55:00,Neutral,Delivery,71
+Google,Acme,Acme X200,"Price is a bit high for what you get, average phone overall.",07-2026,GR-1007,2026-07-01 10:00:00,Neutral,Price,49
+Twitter,Acme,Acme X200,"Muy bueno, lo recomiendo a todos.",07-2026,TW-2007,2026-07-01 10:05:00,language unsupported,,0
+Google,Acme,Acme X200,"Battery life is excellent, lasts two full days easily.",07-2026,GR-1008,2026-07-01 10:10:00,Positive,Battery,97
