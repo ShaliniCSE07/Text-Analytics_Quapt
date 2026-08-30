@@ -3,3 +3,10 @@ __pycache__/
 *.pyc
 .pytest_cache/
 .DS_Store
+node_modules/
+dist/
+data/reviews.db
+data/corrections_log.csv
+data/topics_config.json
+data/analyzed_reviews_results.txt
+data/raw_reviews_dataset.csv
