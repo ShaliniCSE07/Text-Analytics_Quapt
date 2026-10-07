@@ -6,6 +6,7 @@ from app.pipeline import analyze_review
 from app.summarizer import generate_summary
 from app.keywords import extract_keywords, extract_distinctive_keywords
 from app.topics_config import load_topics, save_topics
+from app.database import init_db
 from datetime import datetime
 import csv
 import json
@@ -21,6 +22,13 @@ app.add_middleware(
     allow_methods=["*"],
     allow_headers=["*"],
 )
+
+init_db()
+
+@app.on_event("startup")
+def startup_event():
+    init_db()
+
 
 class ReviewInput(BaseModel):
     Platform: str
