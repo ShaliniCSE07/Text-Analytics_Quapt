@@ -13,11 +13,11 @@ A robust, full-stack application for automated text analytics, fine-grained sent
   * **Contrast Word Logic**: Detects contrast keywords (`but`, `however`), splits multi-clause reviews, and resolves mixed sentiment.
   * **Confidence Scoring**: Records the probability score of predictions to flag low-confidence outputs for manual review.
 * **Semantic Topic Tagging (`app/topics.py`)**:
-  * Uses `SentenceTransformer` (`all-MiniLM-L6-v2`) to compute cosine similarity against configured topic descriptions.
-* **Distinctive Keyword Extraction (`app/keywords.py`)**: Uses TF-IDF and relative frequency scoring to extract highly distinctive phrases (unigrams/bigrams) that characterize Positive vs. Negative reviews.
+  * Uses `SentenceTransformer` (`all-MiniLM-L6-v2`) to compute cosine similarity against configured insurance topic descriptions (e.g. `Claims - Settlement Speed`, `Service - Call Centre and Support`).
+* **Distinctive Keyword Extraction (`app/keywords.py`)**: Uses TF-IDF and relative frequency scoring to extract highly distinctive phrases (unigrams/bigrams) that characterize Positive vs. Negative reviews (e.g. `claim settlement`, `renewal premium`, `surveyor`).
 * **AI Summarization (`app/summarizer.py`)**: Uses `facebook/bart-large-cnn` to auto-generate concise, executive summaries of review subsets.
-* **Runtime Topic Management (`app/topics_config.json`)**: Configured topics are saved as JSON and can be edited via REST API dynamically without restarting the server.
-* **Relational Database (`app/database.py`)**: Stores raw reviews and pipeline outputs in SQLite (`data/reviews.db`) for rapid querying.
+* **Runtime Topic Management (`data/topics_config.json`)**: Configured topics are saved as JSON and can be edited via REST API dynamically without restarting the server.
+* **Relational Database (`app/database.py`)**: Stores raw reviews and pipeline outputs in SQLite (`data/reviews.db`) for rapid querying across products (`Acme Health Shield`, `Acme Motor Secure`).
 
 ### Frontend Dashboard (React, Tailwind CSS, Recharts)
 * **Dark Theme UI**: Premium aesthetic with deep blues/grays and amber accents.

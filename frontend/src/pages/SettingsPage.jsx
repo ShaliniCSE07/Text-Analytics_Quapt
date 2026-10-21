@@ -152,7 +152,7 @@ export default function SettingsPage() {
               type="text"
               value={newName}
               onChange={(e) => setNewName(e.target.value)}
-              placeholder="e.g. Build Quality"
+              placeholder="e.g. Claims - Settlement Speed"
               className="w-full bg-bg border border-gray-800 rounded-lg p-2.5 text-sm text-textPrimary placeholder:text-gray-600 focus:outline-none focus:border-amber focus:ring-1 focus:ring-amber"
               required
             />
@@ -163,7 +163,7 @@ export default function SettingsPage() {
               type="text"
               value={newDesc}
               onChange={(e) => setNewDesc(e.target.value)}
-              placeholder="e.g. durability, materials, well made"
+              placeholder="e.g. claim settlement time, turnaround time, payout delay"
               className="w-full bg-bg border border-gray-800 rounded-lg p-2.5 text-sm text-textPrimary placeholder:text-gray-600 focus:outline-none focus:border-amber focus:ring-1 focus:ring-amber"
               required
             />

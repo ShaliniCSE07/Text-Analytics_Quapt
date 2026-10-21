@@ -52,9 +52,9 @@ if __name__ == "__main__":
         sys.stdout.reconfigure(encoding='utf-8')
 
     samples = [
-        "Battery drains too fast, very disappointed.",
-        "Battery drains way too fast, but the camera is amazing!",
-        "Delivery was quick and packaging was solid.",
+        "Claim settlement was delayed, very disappointed with the turnaround time.",
+        "Premium is reasonable, but the claim settlement took almost three weeks.",
+        "Cashless approval at the network hospital came through quickly.",
         "It's fine I guess, does the job.",
         ""
     ]

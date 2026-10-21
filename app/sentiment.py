@@ -77,11 +77,11 @@ if __name__ == "__main__":
         sys.stdout.reconfigure(encoding='utf-8')
 
     samples = [
-        "Absolutely fantastic, best purchase ever!",
-        "Battery drains way too fast, but the camera is amazing!",
+        "Absolutely fantastic, best insurance experience ever!",
+        "Premium is reasonable, but the claim settlement took almost three weeks.",
         "It's okay, but not great, though it does the job fine.",
-        "Great price, but delivery was very slow and support was rude.",
-        "Price is a bit high for what you get, average phone overall.",
+        "Great premium rate, but claim settlement was very slow and support was rude.",
+        "Price is a bit high for what you get, average policy overall.",
         "Works okay for the price, nothing special."
     ]
     

@@ -1,10 +1,5 @@
-import React, { useState } from 'react';
-import { submitCorrection } from '../api/client';
-
-const TAG_OPTIONS = [
-  'Battery', 'Camera', 'Delivery', 
-  'Customer Support', 'Price', 'Uncategorised'
-];
+import React, { useState, useEffect } from 'react';
+import { submitCorrection, getTopics } from '../api/client';
 
 export default function CorrectionModal({ review, onClose, onCorrectionSaved }) {
   const [rating, setRating] = useState(review.Rating || '');
@@ -15,6 +10,22 @@ export default function CorrectionModal({ review, onClose, onCorrectionSaved }) 
   const [correctedBy, setCorrectedBy] = useState('');
   const [submitting, setSubmitting] = useState(false);
   const [error, setError] = useState('');
+  const [tagOptions, setTagOptions] = useState([]);
+
+  useEffect(() => {
+    getTopics()
+      .then((data) => {
+        if (data && typeof data === 'object') {
+          const names = Object.keys(data);
+          if (!names.includes('Uncategorised')) names.push('Uncategorised');
+          setTagOptions(names);
+        }
+      })
+      .catch((err) => {
+        console.error(err);
+        setTagOptions(['Uncategorised']);
+      });
+  }, []);
 
   const handleTagToggle = (tag) => {
     setTags(prev => 
@@ -80,16 +91,16 @@ export default function CorrectionModal({ review, onClose, onCorrectionSaved }) 
 
             <div>
               <label className="block text-sm font-medium text-textPrimary mb-2">Corrected Tags</label>
-              <div className="grid grid-cols-2 gap-2">
-                {TAG_OPTIONS.map(tag => (
-                  <label key={tag} className="flex items-center space-x-2 text-sm text-textPrimary cursor-pointer bg-bg/60 p-2 rounded border border-gray-800/80 hover:border-gray-700">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 max-h-48 overflow-y-auto p-1 bg-bg/20 rounded border border-gray-800">
+                {tagOptions.map(tag => (
+                  <label key={tag} title={tag} className="flex items-center space-x-2 text-xs text-textPrimary cursor-pointer bg-bg/60 p-2 rounded border border-gray-800/80 hover:border-gray-700">
                     <input 
                       type="checkbox" 
                       checked={tags.includes(tag)}
                       onChange={() => handleTagToggle(tag)}
                       className="rounded border-gray-700 bg-bg text-amber focus:ring-amber"
                     />
-                    <span>{tag}</span>
+                    <span className="truncate">{tag}</span>
                   </label>
                 ))}
               </div>

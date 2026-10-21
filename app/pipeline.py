@@ -52,21 +52,21 @@ if __name__ == "__main__":
     sample_reviews = [
         {
             "Platform": "Google",
-            "Company": "Acme",
-            "Product": "Acme X200",
-            "Review": "Battery drains way too fast, but the camera is amazing!"
+            "Company": "Acme Insurance",
+            "Product": "Acme Health Shield",
+            "Review": "Cashless approval at the network hospital came through in under two hours. Really impressed with the TPA team!"
         },
         {
             "Platform": "Twitter",
-            "Company": "Acme",
-            "Product": "Acme X200",
+            "Company": "Acme Insurance",
+            "Product": "Acme Health Shield",
             "Review": "Ce produit est incroyable"
         },
         {
             "Platform": "Google",
-            "Company": "Acme",
-            "Product": "Acme X200",
-            "Review": "Fast delivery, exactly as described, very happy!"
+            "Company": "Acme Insurance",
+            "Product": "Acme Motor Secure",
+            "Review": "Claim for my bumper damage was settled in five days. The garage network was excellent."
         }
     ]
 

@@ -1,6 +1,6 @@
 import React, { useEffect, useState, useCallback } from 'react';
 import { Link } from 'react-router-dom';
-import { getReviews } from '../api/client';
+import { getReviews, getTopics } from '../api/client';
 import CorrectionModal from './CorrectionModal';
 import ExportButton from './ExportButton';
 import PageHeader from './PageHeader';
@@ -14,6 +14,17 @@ export default function ReviewsTable() {
     product: '',
     tag: ''
   });
+  const [topicOptions, setTopicOptions] = useState([]);
+
+  useEffect(() => {
+    getTopics()
+      .then((data) => {
+        if (data && typeof data === 'object') {
+          setTopicOptions(Object.keys(data));
+        }
+      })
+      .catch((err) => console.error(err));
+  }, []);
 
   const [selectedReview, setSelectedReview] = useState(null);
   const [toastMessage, setToastMessage] = useState('');
@@ -111,11 +122,11 @@ export default function ReviewsTable() {
             className="w-full bg-bg border border-gray-800 rounded p-2 text-sm text-textPrimary focus:outline-none focus:border-amber focus:ring-1 focus:ring-amber"
           >
             <option value="">All Tags</option>
-            <option value="Battery">Battery</option>
-            <option value="Camera">Camera</option>
-            <option value="Delivery">Delivery</option>
-            <option value="Customer Support">Customer Support</option>
-            <option value="Price">Price</option>
+            {topicOptions.map((t) => (
+              <option key={t} value={t}>
+                {t}
+              </option>
+            ))}
             <option value="Uncategorised">Uncategorised</option>
           </select>
         </div>
@@ -167,10 +178,14 @@ export default function ReviewsTable() {
                         {row.Rating || 'None'}
                       </span>
                     </td>
-                    <td className="p-4 align-top">
+                    <td className="p-4 align-top max-w-xs">
                       <div className="flex flex-wrap gap-1">
                         {row.Tags ? row.Tags.split('|').map((t, i) => (
-                          <span key={i} className="bg-bg text-textMuted px-2 py-0.5 rounded text-xs border border-gray-800 font-mono">
+                          <span
+                            key={i}
+                            title={t.trim()}
+                            className="bg-bg text-textMuted px-2 py-0.5 rounded text-xs border border-gray-800 font-mono truncate max-w-[220px] inline-block"
+                          >
                             {t.trim()}
                           </span>
                         )) : <span className="text-gray-600 text-xs italic">No tags</span>}

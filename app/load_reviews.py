@@ -10,7 +10,7 @@ def load_reviews():
         print(f"Error: {csv_path} not found.")
         return
         
-    df = pd.read_csv(csv_path)
+    df = pd.read_csv(csv_path, encoding="utf-8")
     # Handle NaNs which pandas might introduce for empty strings
     df = df.fillna('')
     

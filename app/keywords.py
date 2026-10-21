@@ -1,7 +1,10 @@
 from sklearn.feature_extraction.text import TfidfVectorizer, CountVectorizer
 import numpy as np
 
-WEAK_STANDALONE_WORDS = {"lot", "took", "bit", "kind", "way", "got", "went", "thing", "things", "stuff"}
+WEAK_STANDALONE_WORDS = {
+    "lot", "took", "bit", "kind", "way", "got", "went", "thing", "things", "stuff",
+    "insurance", "insurer", "policy", "company", "acme", "plan", "cover"
+}
 
 
 
@@ -10,7 +13,7 @@ def extract_keywords(reviews: list, top_n: int = 5) -> list:
     Extract top keywords/phrases from a list of review strings using TF-IDF.
 
     TF-IDF naturally downweights terms that appear in almost every review
-    (high document frequency → low IDF), so generic words like "phone" or
+    (high document frequency → low IDF), so generic words like "policy" or
     "product" surface with low aggregate scores even without an explicit
     blocklist beyond the built-in English stop-words.
 
@@ -126,14 +129,14 @@ def extract_distinctive_keywords(group_reviews: list, other_reviews: list, top_n
 # ---------------------------------------------------------------------------
 if __name__ == "__main__":
     group_a = [
-        "This phone is great, battery lasts all day.",
-        "Phone works well, camera quality is excellent.",
-        "Great phone, very happy with the purchase."
+        "This policy is great, cashless claim was settled quickly.",
+        "Insurance works well, hospital network is excellent.",
+        "Great cover, very happy with the claim approval."
     ]
     group_b = [
-        "This phone broke within a week, terrible quality.",
-        "Phone support was unhelpful and slow to respond.",
-        "Disappointed with this phone, poor build quality."
+        "This policy claim was rejected, terrible turnaround time.",
+        "Support was unhelpful and slow to respond on my claim.",
+        "Disappointed with this insurer, high renewal hike."
     ]
 
     res_a = extract_distinctive_keywords(group_a, group_b, top_n=5)
@@ -148,5 +151,5 @@ if __name__ == "__main__":
     words_b = [item["word"] for item in res_b]
 
     print("\nSanity Check:")
-    print(f"'phone' in Group A top 5: {'phone' in words_a}")
-    print(f"'phone' in Group B top 5: {'phone' in words_b}")
+    print(f"'policy' in Group A top 5: {'policy' in words_a}")
+    print(f"'policy' in Group B top 5: {'policy' in words_b}")
