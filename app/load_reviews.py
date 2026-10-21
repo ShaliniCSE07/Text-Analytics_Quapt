@@ -2,8 +2,13 @@ import sqlite3
 import pandas as pd
 import os
 
-def load_reviews():
-    csv_path = "data/raw_reviews_dataset.csv"
+def load_reviews(csv_path=None):
+    if csv_path is None:
+        if os.path.exists("data/sample_customer_reviews.csv"):
+            csv_path = "data/sample_customer_reviews.csv"
+        else:
+            csv_path = "data/raw_reviews_dataset.csv"
+            
     db_path = "data/reviews.db"
     
     if not os.path.exists(csv_path):

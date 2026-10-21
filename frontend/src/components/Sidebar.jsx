@@ -1,10 +1,11 @@
 import React from 'react';
 import { NavLink } from 'react-router-dom';
-import { LayoutDashboard, MessageSquareText, TrendingUp, Sparkles, AlertCircle, Settings } from 'lucide-react';
+import { LayoutDashboard, MessageSquareText, TrendingUp, Sparkles, AlertCircle, Settings, Smile } from 'lucide-react';
 
 export default function Sidebar() {
   const navItems = [
     { label: 'Dashboard', path: '/', icon: LayoutDashboard },
+    { label: 'Emotions', path: '/emotions', icon: Smile },
     { label: 'Reviews', path: '/reviews', icon: MessageSquareText },
     { label: 'Trends', path: '/trends', icon: TrendingUp },
     { label: 'Insights', path: '/insights', icon: Sparkles },
