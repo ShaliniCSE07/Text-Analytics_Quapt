@@ -1,0 +1,111 @@
+================================================================================
+STEP 31 AUDIT: SELF-LEARNING CORRECTION SYSTEM FOUNDATION
+================================================================================
+
+ITEMS AUDIT:
+--------------------------------------------------------------------------------
+1. Real column name for rating on Customer_Reviews_Analysis:
+   - Status: DONE
+   - Verified column name is 'Rating' (not 'Predicted_Rating').
+   - All backend SQL queries (SELECT and UPDATE) across app/ explicitly use 'Rating'.
+
+2. Earliest original rating/tags preserved in PATCH /reviews/correct:
+   - Status: DONE
+   - File: app/main.py (lines 104-121)
+   - When earlier corrections exist for a Platform_Reference_Id, Original_Rating and
+     Original_Tags are retrieved from the earliest row (ORDER BY Correction_Id ASC LIMIT 1),
+     ensuring the model's first prediction is preserved regardless of subsequent edits.
+
+3. Human lock protection (skipping rows where Label_Source = 'human'):
+   - run_pipeline_on_db.py:
+     * Status: DONE
+     * File: app/run_pipeline_on_db.py (lines 27-29 & 48)
+     * Description: Skips all rows already present in Customer_Reviews_Analysis
+       (including all Label_Source = 'human' rows), and sets Label_Source = 'model'
+       on newly inserted reviews.
+   - Confidence backfill:
+     * Status: DONE
+     * Description: No standalone confidence backfill script exists; Confidence was added
+       directly into the database schema and pipeline inserts. No UPDATE modifies Rating/Tags.
+   - Emotion re-analysis (force=true):
+     * Status: DONE
+     * File: app/main.py (lines 800-840)
+     * Description: Even with force=true, the endpoint UPDATE query modifies exclusively
+       Emotion, Emotion_Confidence, Emotion_Scores, and Emotion_Model. It does NOT touch
+       Rating or Tags, leaving human corrections untouched.
+
+4. Migration script app/migrate_corrections.py:
+   - Status: DONE
+   - File: app/migrate_corrections.py
+   - Description: Reads data/corrections_log.csv, fills Review_Text from Customer_Reviews,
+     stores NULL for unknown Original_* values, and deduplicates based on
+     (Platform_Reference_Id, Corrected_At) so repeated runs produce no duplicate rows.
+
+5. Admin endpoints (GET /admin/corrections and PATCH /admin/corrections/{id}/approval):
+   - Status: DONE
+   - File: app/main.py (lines 550-585)
+   - GET /admin/corrections returns all Review_Corrections rows ordered newest first.
+   - PATCH /admin/corrections/{correction_id}/approval updates Approved_For_Learning
+     (0 or 1), returns 404 if not found, and returns the updated row.
+
+================================================================================
+TEST RESULTS (A to E):
+================================================================================
+
+TEST A: Migration Script Idempotency (run twice)
+  Run 1 -> Migrated: 1, Skipped: 0
+  Run 2 -> Migrated: 0, Skipped: 1
+
+TEST B: Correct GR-3007 via PATCH /reviews/correct
+  Response:
+{
+    "Platform_Reference_Id": "GR-3007",
+    "Corrected_Rating": "Neutral",
+    "Corrected_Tags": null,
+    "Corrected_By": "auditor_b",
+    "Corrected_At": "2026-10-22 01:09:58",
+    "applied_to_analysis_table": true,
+    "correction_id": 2
+}
+  Review_Corrections Row:
+{
+    "Correction_Id": 2,
+    "Platform_Reference_Id": "GR-3007",
+    "Review_Text": "Renewal reminder arrived on time and I renewed online in minutes. Hassle free.",
+    "Original_Rating": "Positive",
+    "Corrected_Rating": "Neutral",
+    "Original_Tags": "Servicing - Policy Renewal",
+    "Corrected_Tags": "Servicing - Policy Renewal",
+    "Corrected_By": "auditor_b",
+    "Corrected_At": "2026-10-22 01:09:58",
+    "Approved_For_Learning": 1
+}
+  Customer_Reviews_Analysis.Label_Source: human
+
+TEST C: Correct GR-3007 Second Time (Original_Rating Preserved from Model)
+  Review_Corrections Rows for GR-3007 (Side by Side):
+    Correction_Id: 2 | Platform_Ref: GR-3007 | Original_Rating: Positive | Corrected_Rating: Neutral | Corrected_By: auditor_b | Corrected_At: 2026-10-22 01:09:58
+    Correction_Id: 3 | Platform_Ref: GR-3007 | Original_Rating: Positive | Corrected_Rating: Negative | Corrected_By: auditor_c | Corrected_At: 2026-10-22 01:09:58
+
+TEST D: Re-run Pipeline Human Lock Verification
+  GR-3007 Rating in Customer_Reviews_Analysis: Negative
+  GR-3007 Label_Source in Customer_Reviews_Analysis: human
+  Human lock status: UNCHANGED / LOCKED (Rating='Negative', Label_Source='human')
+
+TEST E: Set Approval to False & Verify via GET /admin/corrections
+  PATCH /admin/corrections/{id}/approval response:
+{
+    "Correction_Id": 2,
+    "Platform_Reference_Id": "GR-3007",
+    "Review_Text": "Renewal reminder arrived on time and I renewed online in minutes. Hassle free.",
+    "Original_Rating": "Positive",
+    "Corrected_Rating": "Neutral",
+    "Original_Tags": "Servicing - Policy Renewal",
+    "Corrected_Tags": "Servicing - Policy Renewal",
+    "Corrected_By": "auditor_b",
+    "Corrected_At": "2026-10-22 01:09:58",
+    "Approved_For_Learning": 0
+}
+  Verified row in GET /admin/corrections: Correction_Id=2, Approved_For_Learning=0
+
+================================================================================
