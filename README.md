@@ -236,5 +236,28 @@ npm install
 npm run dev
 ```
 
+Visit `http://localhost:5173` in your browser to interact with the Sentiment Analytics Dashboard!
+
+---
+
+## 🧠 Fine-Tuning the Model (Insurance Domain)
+
+This branch includes scripts for fine-tuning the RoBERTa model on domain-specific insurance data and comparing it to the zero-shot baseline.
+
+### 1. Baseline Evaluation (Pretrained)
+To evaluate the current `cardiffnlp` model on the `data/labeled_validation_set.csv`:
+```bash
+python app/evaluate_baseline.py
+```
+
+### 2. Fine-Tuning
+To train the model on the insurance dataset:
+```bash
+python app/finetune_roberta.py
+```
+⚠️ Important Note on Model Weights:
+The fine-tuned model weights are excluded from this repository via .gitignore to keep the repo lightweight.
+To use the fine-tuned model in the dashboard, you must run python app/finetune_roberta.py locally first to generate the ./models/finetuned-insurance-roberta/ folder.
+The backend (app/sentiment.py) is designed to automatically load this local fine-tuned model if it exists, and gracefully fall back to the pretrained Hugging Face model if it does not.
 Visit `http://localhost:5173` in your browser to interact with the dashboard.
 API documentation is automatically available via Swagger UI at `http://localhost:8000/docs`.

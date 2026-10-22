@@ -2,7 +2,23 @@ import re
 import sys
 from transformers import pipeline
 
-MODEL_NAME = "cardiffnlp/twitter-roberta-base-sentiment-latest"
+import os
+from transformers import pipeline
+
+# Define both paths
+FINETUNED_MODEL_DIR = "./models/finetuned-insurance-roberta"
+PRETRAINED_MODEL_NAME = "cardiffnlp/twitter-roberta-base-sentiment-latest"
+
+# Check if the fine-tuned model exists locally
+if os.path.exists(FINETUNED_MODEL_DIR):
+    print("✅ Loading FINE-TUNED insurance model...")
+    MODEL_NAME = FINETUNED_MODEL_DIR
+else:
+    print("⚠️ Fine-tuned model not found. Loading PRETRAINED baseline model...")
+    MODEL_NAME = PRETRAINED_MODEL_NAME
+
+# Then wherever the model is loaded, it uses MODEL_NAME
+sentiment_pipeline = pipeline("sentiment-analysis", model=MODEL_NAME)
 
 # Load model once at module level
 sentiment_pipeline = pipeline("sentiment-analysis", model=MODEL_NAME)

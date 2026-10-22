@@ -5,3 +5,5 @@ fastapi
 uvicorn
 langdetect
 pandas
+datasets>=2.14.0
+accelerate>=1.1.0
