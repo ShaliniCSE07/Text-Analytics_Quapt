@@ -12,3 +12,4 @@ data/corrections_log.csv
 data/topics_config.json
 data/analyzed_reviews_results.txt
 data/raw_reviews_dataset.csv
+models/

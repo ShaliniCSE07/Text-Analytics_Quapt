@@ -121,3 +121,14 @@ npm run dev
 ```
 
 Visit `http://localhost:5173` in your browser to interact with the Sentiment Analytics Dashboard!
+
+---
+
+## 🧠 Fine-Tuning the Model (Insurance Domain)
+
+This branch includes scripts for fine-tuning the RoBERTa model on domain-specific insurance data and comparing it to the zero-shot baseline.
+
+### 1. Baseline Evaluation (Pretrained)
+To evaluate the current `cardiffnlp` model on the `data/labeled_validation_set.csv`:
+```bash
+python app/evaluate_baseline.py
