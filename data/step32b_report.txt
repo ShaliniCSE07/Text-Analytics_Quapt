@@ -1,0 +1,119 @@
+================================================================================
+DIAGNOSTICS REPORT: STEP 32B (LEARNING SYSTEM & DATA CALIBRATION)
+================================================================================
+
+PART 1 - CONTRAST RULE TEST (THRESHOLD = 0.5)
+--------------------------------------------------------------------------------
+Query a: "Claim settlement was very slow and I kept waiting, but the agent was polite."
+  Similarity : 84%
+  Applied    : False
+  Label      : None
+  Reason     : signature_mismatch
+  Memory Sig : negation=False, contrast=False (text: "Claim settlement was very slow and I kept waiting.")
+  Query Sig  : negation=False, contrast=True
+
+Query b: "Claim settlement was very slow and I kept waiting."
+  Similarity : 100%
+  Applied    : True
+  Label      : Negative
+  Reason     : match
+  Memory Sig : negation=False, contrast=False (text: "Claim settlement was very slow and I kept waiting.")
+  Query Sig  : negation=False, contrast=False
+
+PART 2 - ANTONYM SIMILARITY (RAW COSINE SIMILARITY)
+--------------------------------------------------------------------------------
+Pair: "Claim settlement was very slow."  <-->  "Claim settlement was very fast."
+  Cosine Similarity: 0.9305 (93.1%)
+
+Pair: "The agent was rude and unhelpful."  <-->  "The agent was polite and helpful."
+  Cosine Similarity: 0.7625 (76.2%)
+
+Pair: "My refund was rejected."  <-->  "My refund was approved."
+  Cosine Similarity: 0.8602 (86.0%)
+
+Pair: "The app is easy to use."  <-->  "The app is hard to use."
+  Cosine Similarity: 0.8543 (85.4%)
+
+Pair: "Premium is expensive."  <-->  "Premium is affordable."
+  Cosine Similarity: 0.9265 (92.6%)
+
+PART 3 - REAL-DATA CALIBRATION
+--------------------------------------------------------------------------------
+Total valid English reviews loaded from DB: 116
+Band [0.75-0.80]:
+  Total Pairs       : 3
+  Differing Ratings : 2
+  Example Pairs (showing 3 of 3):
+    Example 1 [RATING MISMATCH] (Sim: 0.7554):
+      [TP-3002] (Positive): "Renewal was easy online and the NCB discount was applied correctly. Smooth process."
+      [TW-2014] (Negative): "Renewal premium jumped by 40 percent even though I had no claim last year. My NCB discount vanished!"
+    Example 2 [RATING MISMATCH] (Sim: 0.7605):
+      [GR-1024] (Neutral): "Claim finally approved and the garage did a good job. Took long but happy with the repair."
+      [TW-2020] (Positive): "Claim settled in two days and the garage was paid directly. Honestly, I am impressed!"
+    Example 3 [SAME RATING] (Sim: 0.7699):
+      [GR-1004] (Positive): "Roadside assistance arrived within 30 minutes when my car broke down at night. Very helpful team."
+      [GR-1044] (Positive): "My roadside assistance arrived in twenty minutes and the driver was polite. I could not ask for better service."
+
+Band [0.80-0.85]:
+  Total Pairs       : 2
+  Differing Ratings : 1
+  Example Pairs (showing 2 of 2):
+    Example 1 [RATING MISMATCH] (Sim: 0.8177):
+      [GR-1022] (Negative): "Premium was fair at purchase, but the renewal hike and the claim delay have ruined my trust."
+      [GR-1032] (Neutral): "The premium increased at renewal even though I made no claims. I am disappointed that nobody explained the reason."
+    Example 2 [SAME RATING] (Sim: 0.8278):
+      [GR-1027] (Negative): "I have called three times about the same reimbursement and still have no answer. This is extremely frustrating."
+      [TP-3033] (Negative): "I have spent hours on calls and still cannot get a straight answer about the missing reimbursement. So frustrating."
+
+Band [0.85-0.90]:
+  Total Pairs       : 0
+  Differing Ratings : 0
+  No pairs found in this band.
+
+Band [0.90+]:
+  Total Pairs       : 1
+  Differing Ratings : 0
+  Example Pairs (showing 1 of 1):
+    Example 1 [SAME RATING] (Sim: 1.0000):
+      [TP-3007] (Positive): "Renewal reminder arrived on time and I renewed online in minutes. Hassle free."
+      [GR-3007] (Positive): "Renewal reminder arrived on time and I renewed online in minutes. Hassle free."
+
+PART 4 - TAG-COUNT DISTRIBUTION & TOPICS CONFIGURATION
+--------------------------------------------------------------------------------
+Tag Count Histogram (excluding 'Uncategorised'):
+  0 tags: 13 reviews
+  1 tags: 10 reviews
+  2 tags: 17 reviews
+  3 tags: 12 reviews
+  4 tags: 12 reviews
+  5 tags: 17 reviews
+  6+ tags: 40 reviews
+
+Top 5 Reviews with the Most Tags:
+  1. [TW-2007] (15 tags):
+     Text: "Claim was rejected citing a pre-existing condition that I had declared during purchase. Totally unfair."
+     Tags: Claims - Settlement Speed, Claims - Rejection and Disputes, Claims - Documentation, Claims - Intimation and Tracking, Claims - Cashless and Network Providers, Claims - Reimbursement, Onboarding - Underwriting and Medical Tests, Onboarding - Mis-selling and Transparency, Onboarding - Quotes and Plan Selection, Premium - Affordability and Value, Premium - Payment and Auto-debit, Premium - Refunds and Cancellation, Service - Grievance and Escalation, Coverage - Clarity and Exclusions, Travel - Trip Disruption and Assistance
+  2. [TW-2001] (13 tags):
+     Text: "Premium is reasonable, but the claim settlement took almost three weeks."
+     Tags: Claims - Settlement Speed, Claims - Rejection and Disputes, Claims - Documentation, Claims - Reimbursement, Onboarding - Quotes and Plan Selection, Premium - Affordability and Value, Premium - Renewal Hike, Premium - Refunds and Cancellation, Service - Grievance and Escalation, Coverage - Clarity and Exclusions, Life - Maturity and Surrender, Travel - Trip Disruption and Assistance, Home - Property Damage and Repairs
+  3. [TP-3023] (13 tags):
+     Text: "The policy looked comprehensive when I bought it, but several expenses were excluded. I feel let down."
+     Tags: Claims - Reimbursement, Onboarding - Digital Purchase and KYC, Onboarding - Underwriting and Medical Tests, Onboarding - Mis-selling and Transparency, Onboarding - Quotes and Plan Selection, Premium - Affordability and Value, Premium - Renewal Hike, Premium - Refunds and Cancellation, Servicing - Policy Renewal, Servicing - Endorsements and Changes, Servicing - Policy Documents, Coverage - Clarity and Exclusions, Coverage - Benefits and Add-ons
+  4. [TW-2023] (12 tags):
+     Text: "After weeks of waiting, I received a partial reimbursement with no breakdown. Such a letdown."
+     Tags: Claims - Settlement Speed, Claims - Rejection and Disputes, Claims - Documentation, Claims - Cashless and Network Providers, Claims - Reimbursement, Onboarding - Mis-selling and Transparency, Premium - Payment and Auto-debit, Premium - Refunds and Cancellation, Service - Call Centre and Support, Service - Grievance and Escalation, Coverage - Clarity and Exclusions, Travel - Trip Disruption and Assistance
+  5. [TP-3001] (11 tags):
+     Text: "Buying the policy online was smooth and the e-KYC took just five minutes. Policy document arrived the same day."
+     Tags: Claims - Settlement Speed, Onboarding - Digital Purchase and KYC, Onboarding - Mis-selling and Transparency, Onboarding - Quotes and Plan Selection, Premium - Affordability and Value, Premium - Refunds and Cancellation, Servicing - Policy Renewal, Servicing - Endorsements and Changes, Servicing - Policy Documents, Service - Grievance and Escalation, Digital - Website and Portal
+
+Topics Tagging Configuration:
+  Similarity threshold used by tag_topics: 0.3
+  Number of configured topics           : 31
+
+PART 5 - process_new_file.py CHECK
+--------------------------------------------------------------------------------
+File process_new_file.py does NOT exist in the repository.
+Inspected all repo directories (excluding venv/node_modules/.git).
+All database insertions for analysis reviews are centralized in app/run_pipeline_on_db.py,
+which was confirmed and updated to write Label_Source, Model_Rating, Learned_From, and Learned_Similarity.
+================================================================================

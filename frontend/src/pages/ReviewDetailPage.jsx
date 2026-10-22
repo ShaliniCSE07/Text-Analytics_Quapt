@@ -41,6 +41,26 @@ export default function ReviewDetailPage() {
     }
   };
 
+  const getEmotionBadgeStyle = (emotion) => {
+    switch (emotion?.toLowerCase()) {
+      case 'delight':
+        return 'bg-emerald-500/20 text-emerald-400 border-emerald-500/40';
+      case 'frustration':
+        return 'bg-amber-500/20 text-amber-400 border-amber-500/40';
+      case 'anger':
+        return 'bg-red-500/20 text-red-400 border-red-500/40';
+      case 'disappointment':
+        return 'bg-indigo-500/20 text-indigo-400 border-indigo-500/40';
+      case 'anxiety':
+        return 'bg-purple-500/20 text-purple-400 border-purple-500/40';
+      case 'confusion':
+        return 'bg-yellow-500/20 text-yellow-400 border-yellow-500/40';
+      case 'uncertain':
+      default:
+        return 'bg-gray-500/20 text-gray-300 border-gray-500/30';
+    }
+  };
+
   if (loading) {
     return <div className="p-8 text-center text-textMuted animate-pulse font-body">Loading review details...</div>;
   }
@@ -59,6 +79,7 @@ export default function ReviewDetailPage() {
   }
 
   const { review, correction_history } = data;
+  const emotionScores = review.Emotion_Scores_Dict || {};
 
   return (
     <div className="space-y-6 font-body text-textPrimary">
@@ -73,7 +94,7 @@ export default function ReviewDetailPage() {
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-        {/* Left Column: Review Info */}
+        {/* Left Column: Review Info & Emotion Analysis */}
         <div className="lg:col-span-2 space-y-6">
           <div className="bg-surface rounded-lg shadow-sm border border-gray-800/80 p-6">
             <div className="flex items-center justify-between mb-4">
@@ -83,9 +104,16 @@ export default function ReviewDetailPage() {
                   {review.Product}
                 </span>
               </div>
-              <span className={`px-3 py-1 rounded-full text-sm font-bold border ${getRatingBadgeStyle(review.Rating)}`}>
-                {review.Rating || 'None'}
-              </span>
+              <div className="flex items-center space-x-2">
+                <span className={`px-3 py-1 rounded-full text-xs font-bold border ${getRatingBadgeStyle(review.Rating)}`}>
+                  {review.Rating || 'None'}
+                </span>
+                {review.Emotion && (
+                  <span className={`px-3 py-1 rounded-full text-xs font-bold border ${getEmotionBadgeStyle(review.Emotion)}`}>
+                    {review.Emotion}
+                  </span>
+                )}
+              </div>
             </div>
             
             <div className="bg-bg p-5 rounded-lg border-l-4 border-amber italic text-lg leading-relaxed text-textPrimary mb-6">
@@ -105,9 +133,73 @@ export default function ReviewDetailPage() {
               </div>
               
               <div className="space-y-1 text-right">
-                <div className="text-xs font-mono text-textMuted">Confidence</div>
+                <div className="text-xs font-mono text-textMuted">Sentiment Confidence</div>
                 <div className="text-lg font-mono font-bold text-amber">{review.Confidence || 0}%</div>
               </div>
+            </div>
+          </div>
+
+          {/* Emotion Analysis Breakdown Card */}
+          <div className="bg-surface rounded-lg shadow-sm border border-gray-800/80 p-6 space-y-4">
+            <div className="flex items-center justify-between border-b border-gray-800 pb-3">
+              <div>
+                <h3 className="font-display font-bold text-base text-textPrimary">Emotion Classification</h3>
+                <p className="text-xs text-textMuted">RoBERTa GoEmotions mapped to 6 business categories (ICXBee)</p>
+              </div>
+              <div className="text-right">
+                <span className={`px-3 py-1 rounded-full text-xs font-bold border ${getEmotionBadgeStyle(review.Emotion)}`}>
+                  {review.Emotion || 'Uncertain'}
+                </span>
+                <span className="ml-2 font-mono text-xs text-amber font-semibold">
+                  {review.Emotion_Confidence ? `${review.Emotion_Confidence}%` : 'N/A'}
+                </span>
+              </div>
+            </div>
+
+            {/* Mapped Score Bars */}
+            <div className="space-y-2.5 pt-2">
+              <div className="text-xs font-mono text-textMuted uppercase tracking-wider">Mapped Category Scores</div>
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                {[
+                  { name: 'Delight', color: 'bg-emerald-500', barText: 'text-emerald-400' },
+                  { name: 'Frustration', color: 'bg-amber-500', barText: 'text-amber-400' },
+                  { name: 'Disappointment', color: 'bg-indigo-500', barText: 'text-indigo-400' },
+                  { name: 'Anxiety', color: 'bg-purple-500', barText: 'text-purple-400' },
+                  { name: 'Confusion', color: 'bg-yellow-500', barText: 'text-yellow-400' },
+                  { name: 'Anger', color: 'bg-red-500', barText: 'text-red-400' },
+                ].map((emo) => {
+                  const score = emotionScores[emo.name] ?? 0;
+                  const pct = Math.round(score * 100);
+                  const isPrimary = review.Emotion === emo.name;
+                  return (
+                    <div key={emo.name} className={`p-2.5 rounded-lg bg-bg border ${isPrimary ? 'border-gray-700 ring-1 ring-amber/30' : 'border-gray-800/70'}`}>
+                      <div className="flex justify-between items-center text-xs mb-1.5">
+                        <span className={`font-semibold ${isPrimary ? emo.barText : 'text-textPrimary'}`}>
+                          {emo.name} {isPrimary && '★'}
+                        </span>
+                        <span className="font-mono text-textMuted">{pct}%</span>
+                      </div>
+                      <div className="w-full bg-gray-900 h-1.5 rounded-full overflow-hidden">
+                        <div
+                          className={`h-full ${emo.color} transition-all duration-500 rounded-full`}
+                          style={{ width: `${Math.min(100, Math.max(0, pct))}%` }}
+                        />
+                      </div>
+                    </div>
+                  );
+                })}
+              </div>
+            </div>
+
+            {/* Explainability & Model Info */}
+            <div className="mt-4 p-3 bg-bg/60 rounded-md border border-gray-800 text-xs text-textMuted space-y-1">
+              <div className="flex justify-between font-mono text-[11px] text-gray-500">
+                <span>Model: {review.Emotion_Model || 'SamLowe/roberta-base-go_emotions'}</span>
+                <span>Rule: Max Source Score per Category</span>
+              </div>
+              <p className="italic text-gray-400 leading-relaxed pt-1">
+                Notice: Model-generated scores represent statistical lexical associations detected in the text, not certified human emotional states.
+              </p>
             </div>
           </div>
 

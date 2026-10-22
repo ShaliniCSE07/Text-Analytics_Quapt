@@ -8,6 +8,7 @@ import InsightsPage from './pages/InsightsPage';
 import NeedsReviewPanel from './components/NeedsReviewPanel';
 import SettingsPage from './pages/SettingsPage';
 import ReviewDetailPage from './pages/ReviewDetailPage';
+import EmotionsPage from './pages/EmotionsPage';
 
 export default function App() {
   return (
@@ -21,6 +22,7 @@ export default function App() {
           <div className="max-w-6xl mx-auto">
             <Routes>
               <Route path="/" element={<Dashboard />} />
+              <Route path="/emotions" element={<EmotionsPage />} />
               <Route path="/reviews" element={<ReviewsTable />} />
               <Route path="/trends" element={<TrendsPage />} />
               <Route path="/insights" element={<InsightsPage />} />

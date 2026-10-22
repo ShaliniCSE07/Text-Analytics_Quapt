@@ -44,8 +44,9 @@ def run_pipeline():
             
         cursor.execute('''
             INSERT INTO Customer_Reviews_Analysis 
-            (Platform, Company, Product, Platform_Reference_Id, Rating, Tags, Confidence, Load_timestamp)
-            VALUES (?, ?, ?, ?, ?, ?, ?, ?)
+            (Platform, Company, Product, Platform_Reference_Id, Rating, Tags, Confidence, Load_timestamp,
+             Emotion, Emotion_Confidence, Emotion_Scores, Emotion_Model, Label_Source, Model_Rating, Learned_From, Learned_Similarity)
+            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
         ''', (
             result.get('Platform', ''),
             result.get('Company', ''),
@@ -54,7 +55,15 @@ def run_pipeline():
             result.get('Rating', ''),
             tags,
             result.get('Confidence', 100),
-            datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+            datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
+            result.get('Emotion', 'Uncertain'),
+            result.get('Emotion_Confidence', 0),
+            result.get('Emotion_Scores', '{}'),
+            result.get('Emotion_Model', ''),
+            result.get('Label_Source', 'model'),
+            result.get('Model_Rating', result.get('Rating', '')),
+            result.get('Learned_From', None),
+            result.get('Learned_Similarity', None)
         ))
         
         newly_analyzed += 1
