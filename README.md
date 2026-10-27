@@ -261,3 +261,22 @@ To use the fine-tuned model in the dashboard, you must run python app/finetune_r
 The backend (app/sentiment.py) is designed to automatically load this local fine-tuned model if it exists, and gracefully fall back to the pretrained Hugging Face model if it does not.
 Visit `http://localhost:5173` in your browser to interact with the dashboard.
 API documentation is automatically available via Swagger UI at `http://localhost:8000/docs`.
+
+---
+
+## 📈 4-Domain Data Scaling Experiment
+
+This module evaluates the fine-tuning performance of the RoBERTa model across four distinct domains (Insurance, Banking, Manufacturing, and Tweets) using real-world datasets. The goal is to observe the learning curve and diminishing returns as the training data size increases (25, 50, and 1000 samples).
+
+### Datasets Used
+- **Insurance:** Vehicle Insurance Sentiment Feedback (Kaggle)
+- **Banking:** FINCORP Financial Complaint Corpus
+- **Manufacturing:** UXPID (User eXperience Perception Insights Dataset)
+- **Tweets:** `cardiffnlp/tweet_eval` (Hugging Face)
+
+### How to Run
+1. Ensure all datasets are placed in `data/real_datasets/` (and the UXPID JSONs are in `data/UXPID/`).
+2. Run the scaling experiment script:
+```bash
+python app/run_scaling_experiment.py
+```
