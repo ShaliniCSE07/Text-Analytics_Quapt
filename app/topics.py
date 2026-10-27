@@ -1,15 +1,21 @@
 import sys
-from sentence_transformers import SentenceTransformer, util
+from sentence_transformers import util
 
 try:
     from app.topics_config import load_topics
 except ImportError:
     from topics_config import load_topics
 
-MODEL_NAME = "all-MiniLM-L6-v2"
+try:
+    from app.embeddings import get_embedder
+except ImportError:
+    from embeddings import get_embedder
 
-# Load model once at module level (expensive — keep at top)
-model = SentenceTransformer(MODEL_NAME)
+
+def __getattr__(name):
+    if name == "model":
+        return get_embedder()
+    raise AttributeError(f"module '{__name__}' has no attribute '{name}'")
 
 
 def tag_topics(text: str, threshold: float = 0.3) -> list:
@@ -32,8 +38,9 @@ def tag_topics(text: str, threshold: float = 0.3) -> list:
         topic_names = list(topics.keys())
         topic_descriptions = list(topics.values())
 
-        text_embedding = model.encode(text, convert_to_tensor=True)
-        topic_embeddings = model.encode(topic_descriptions, convert_to_tensor=True)
+        embedder = get_embedder()
+        text_embedding = embedder.encode(text, convert_to_tensor=True)
+        topic_embeddings = embedder.encode(topic_descriptions, convert_to_tensor=True)
 
         cosine_scores = util.cos_sim(text_embedding, topic_embeddings)[0]
 

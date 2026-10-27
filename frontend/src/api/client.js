@@ -73,3 +73,24 @@ export const getReviewDetail = async (platformReferenceId) => {
   const response = await api.get(`/reviews/${platformReferenceId}`);
   return response.data;
 };
+
+export const getEmotions = async (filters = {}) => {
+  const response = await api.get('/reviews/emotions', { params: filters });
+  return response.data;
+};
+
+export const getEmotionsSummary = async () => {
+  const response = await api.get('/reviews/emotions/summary');
+  return response.data;
+};
+
+export const getEmotionsTrend = async () => {
+  const response = await api.get('/reviews/emotions/trend');
+  return response.data;
+};
+
+export const analyzeEmotions = async (force = false) => {
+  const response = await api.post('/analyze-emotions', { force });
+  return response.data;
+};
+
